@@ -1,4 +1,3 @@
-import { h, ref, onMounted, onUpdated, onBeforeUpdate, computed, onBeforeUnmount } from 'vue';
 import { uniqueClasses } from './utils.js';
 const SwiperSlide = {
   name: 'SwiperSlide',
@@ -28,8 +27,8 @@ const SwiperSlide = {
     const {
       swiperRef
     } = props;
-    const slideElRef = ref(null);
-    const slideClasses = ref('swiper-slide');
+    const slideElRef = Vue.ref(null);
+    const slideClasses = Vue.ref('swiper-slide');
 
     function updateClasses(swiper, el, classNames) {
       if (el === slideElRef.value) {
@@ -37,17 +36,17 @@ const SwiperSlide = {
       }
     }
 
-    onMounted(() => {
+    Vue.onMounted(() => {
       if (!swiperRef.value) return;
       swiperRef.value.on('_slideClass', updateClasses);
       eventAttached = true;
     });
-    onBeforeUpdate(() => {
+    Vue.onBeforeUpdate(() => {
       if (eventAttached || !swiperRef || !swiperRef.value) return;
       swiperRef.value.on('_slideClass', updateClasses);
       eventAttached = true;
     });
-    onUpdated(() => {
+    Vue.onUpdated(() => {
       if (!slideElRef.value || !swiperRef || !swiperRef.value) return;
 
       if (swiperRef.value.destroyed) {
@@ -56,11 +55,11 @@ const SwiperSlide = {
         }
       }
     });
-    onBeforeUnmount(() => {
+    Vue.onBeforeUnmount(() => {
       if (!swiperRef || !swiperRef.value) return;
       swiperRef.value.off('_slideClass', updateClasses);
     });
-    const slideData = computed(() => ({
+    const slideData = Vue.computed(() => ({
       isActive: slideClasses.value.indexOf('swiper-slide-active') >= 0 || slideClasses.value.indexOf('swiper-slide-duplicate-active') >= 0,
       isVisible: slideClasses.value.indexOf('swiper-slide-visible') >= 0,
       isDuplicate: slideClasses.value.indexOf('swiper-slide-duplicate') >= 0,
@@ -68,11 +67,11 @@ const SwiperSlide = {
       isNext: slideClasses.value.indexOf('swiper-slide-next') >= 0 || slideClasses.value.indexOf('swiper-slide-duplicate-next') >= 0
     }));
     return () => {
-      return h(props.tag, {
+      return Vue.h(props.tag, {
         class: uniqueClasses(`${slideClasses.value}`),
         ref: slideElRef,
         'data-swiper-slide-index': props.virtualIndex
-      }, props.zoom ? h('div', {
+      }, props.zoom ? Vue.h('div', {
         class: 'swiper-zoom-container',
         'data-swiper-zoom': typeof props.zoom === 'number' ? props.zoom : undefined
       }, slots.default && slots.default(slideData.value)) : slots.default && slots.default(slideData.value));

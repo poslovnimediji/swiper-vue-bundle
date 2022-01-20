@@ -1,4 +1,3 @@
-import { h } from 'vue';
 import Swiper from 'swiper';
 
 function calcLoopedSlides(slides, swiperParams) {
@@ -33,7 +32,7 @@ function renderLoop(swiperRef, slides, swiperParams) {
 
   function duplicateSlide(child, index, position) {
     if (!child.props) child.props = {};
-    return h(child.type, { ...child.props,
+    return Vue.h(child.type, { ...child.props,
       key: `${child.key}-duplicate-${index}-${position}`,
       class: `${child.props.className || ''} ${swiperParams.slideDuplicateClass} ${child.props.class || ''}`
     }, child.children);
@@ -44,7 +43,7 @@ function renderLoop(swiperRef, slides, swiperParams) {
 
     if (blankSlidesNum !== swiperParams.slidesPerGroup) {
       for (let i = 0; i < blankSlidesNum; i += 1) {
-        const blankSlide = h('div', {
+        const blankSlide = Vue.h('div', {
           class: `${swiperParams.slideClass} ${swiperParams.slideBlankClass}`
         });
         modifiedSlides.push(blankSlide);

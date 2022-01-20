@@ -1,4 +1,3 @@
-import { h, ref, onMounted, onUpdated, onBeforeUnmount, watch, nextTick } from 'vue';
 import { getParams } from './get-params.js';
 import { initSwiper, mountSwiper } from './init-swiper.js';
 import { needsScrollbar, needsNavigation, needsPagination, uniqueClasses, extend } from './utils.js';
@@ -477,23 +476,23 @@ const Swiper = {
       tag: Tag,
       wrapperTag: WrapperTag
     } = props;
-    const containerClasses = ref('swiper');
-    const virtualData = ref(null);
-    const breakpointChanged = ref(false);
-    const initializedRef = ref(false);
-    const swiperElRef = ref(null);
-    const swiperRef = ref(null);
-    const oldPassedParamsRef = ref(null);
+    const containerClasses = Vue.ref('swiper');
+    const virtualData = Vue.ref(null);
+    const breakpointChanged = Vue.ref(false);
+    const initializedRef = Vue.ref(false);
+    const swiperElRef = Vue.ref(null);
+    const swiperRef = Vue.ref(null);
+    const oldPassedParamsRef = Vue.ref(null);
     const slidesRef = {
       value: []
     };
     const oldSlidesRef = {
       value: []
     };
-    const nextElRef = ref(null);
-    const prevElRef = ref(null);
-    const paginationElRef = ref(null);
-    const scrollbarElRef = ref(null);
+    const nextElRef = Vue.ref(null);
+    const prevElRef = Vue.ref(null);
+    const paginationElRef = Vue.ref(null);
+    const scrollbarElRef = Vue.ref(null);
     const {
       params: swiperParams,
       passedParams
@@ -544,7 +543,7 @@ const Swiper = {
       extend(swiperRef.value.originalParams.virtual, extendWith);
     }
 
-    onUpdated(() => {
+    Vue.onUpdated(() => {
       // set initialized flag
       if (!initializedRef.value && swiperRef.value) {
         swiperRef.value.emitSlidesClasses();
@@ -574,13 +573,13 @@ const Swiper = {
       breakpointChanged.value = false;
     }); // update on virtual update
 
-    watch(virtualData, () => {
-      nextTick(() => {
+    Vue.watch(virtualData, () => {
+      Vue.nextTick(() => {
         updateOnVirtualData(swiperRef.value);
       });
     }); // mount swiper
 
-    onMounted(() => {
+    Vue.onMounted(() => {
       if (!swiperElRef.value) return;
       mountSwiper({
         el: swiperElRef.value,
@@ -592,7 +591,7 @@ const Swiper = {
       }, swiperParams);
       emit('swiper', swiperRef.value);
     });
-    onBeforeUnmount(() => {
+    Vue.onBeforeUnmount(() => {
       if (swiperRef.value && !swiperRef.value.destroyed) {
         swiperRef.value.destroy(true, false);
       }
@@ -619,22 +618,22 @@ const Swiper = {
         slides,
         slots
       } = getChildren(originalSlots, slidesRef, oldSlidesRef);
-      return h(Tag, {
+      return Vue.h(Tag, {
         ref: swiperElRef,
         class: uniqueClasses(containerClasses.value)
-      }, [slots['container-start'], needsNavigation(props) && [h('div', {
+      }, [slots['container-start'], needsNavigation(props) && [Vue.h('div', {
         ref: prevElRef,
         class: 'swiper-button-prev'
-      }), h('div', {
+      }), Vue.h('div', {
         ref: nextElRef,
         class: 'swiper-button-next'
-      })], needsScrollbar(props) && h('div', {
+      })], needsScrollbar(props) && Vue.h('div', {
         ref: scrollbarElRef,
         class: 'swiper-scrollbar'
-      }), needsPagination(props) && h('div', {
+      }), needsPagination(props) && Vue.h('div', {
         ref: paginationElRef,
         class: 'swiper-pagination'
-      }), h(WrapperTag, {
+      }), Vue.h(WrapperTag, {
         class: 'swiper-wrapper'
       }, [slots['wrapper-start'], renderSlides(slides), slots['wrapper-end']]), slots['container-end']]);
     };

@@ -1,5 +1,3 @@
-import { h } from 'vue';
-
 function updateOnVirtualData(swiper) {
   if (!swiper || swiper.destroyed || !swiper.params.virtual || swiper.params.virtual && !swiper.params.virtual.enabled) return;
   swiper.updateSlides();
@@ -27,7 +25,7 @@ function renderVirtual(swiperRef, slides, virtualData) {
     if (!slide.props.style) slide.props.style = {};
     slide.props.swiperRef = swiperRef;
     slide.props.style = style;
-    return h(slide.type, { ...slide.props
+    return Vue.h(slide.type, { ...slide.props
     }, slide.children);
   });
 }
