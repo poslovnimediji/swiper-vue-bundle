@@ -12,9 +12,10 @@ https://swiperjs.com/vue
 
 ## Update version
 
+* change version in `package.json` file
 * run `npm install`
-* update version:
-  * copy code from https://github.com/nolimits4web/swiper/tree/master/src/vue to `/src` folder
+* compile new code:
+  * copy code from `node_modules/swiper/vue` to `/src` folder
   * delete all Vue imports. E.g. `import { h, ref, onMounted, onUpdated, onBeforeUnmount, watch, nextTick } from 'vue';`
   * add prefix `Vue.` to all functions deleted in previous step. E.g. from `ref(null)` to `Vue.ref(null)`
 * run webpack with `npx webpack`
