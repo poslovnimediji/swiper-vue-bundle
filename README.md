@@ -9,6 +9,7 @@ https://swiperjs.com/vue
 ## Requirements
 
 * Vue 3.x CDN
+* swiper css CDN
 
 ## Update version
 
